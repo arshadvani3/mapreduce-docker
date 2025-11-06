@@ -26,7 +26,8 @@ class MapReduceService(rpyc.Service):
         
         # Create intermediate pairs: each word gets a count of 1
         # This is the classic MapReduce pattern
-        intermediate_pairs = [(word, 1) for word in words]
+        # IMPORTANT: Convert to list explicitly for RPyC serialization
+        intermediate_pairs = list([(word, 1) for word in words])
         
         print(f"[WORKER] Map task complete: {len(intermediate_pairs)} word occurrences")
         return intermediate_pairs

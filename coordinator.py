@@ -186,7 +186,12 @@ def execute_map_task(worker_addr, task_id, text_chunk, results, task_tracker):
         print(f"[COORDINATOR] Starting map task {task_id} on {worker_addr[0]}")
         result = conn.root.exposed_map(text_chunk)
         
-        results[task_id] = result
+        # Force complete data transfer by converting to local list before connection closes
+        local_result = []
+        for item in result:
+            local_result.append(tuple(item))  # Convert each item to tuple
+        
+        results[task_id] = local_result
         task_tracker.complete_task(task_id)
         print(f"[COORDINATOR] Map task {task_id} completed successfully")
         
@@ -217,7 +222,10 @@ def execute_reduce_task(worker_addr, task_id, grouped_items, results, task_track
         print(f"[COORDINATOR] Starting reduce task {task_id} on {worker_addr[0]}")
         result = conn.root.exposed_reduce(grouped_items)
         
-        results[task_id] = result
+        # Force complete data transfer by converting to local dict before connection closes
+        local_result = dict(result)
+        
+        results[task_id] = local_result
         task_tracker.complete_task(task_id)
         print(f"[COORDINATOR] Reduce task {task_id} completed successfully")
         
@@ -301,6 +309,7 @@ def mapreduce_wordcount(input_files):
     intermediate_data = collections.defaultdict(list)
     
     for task_id, pairs in map_results.items():
+        # Data is already local from execute_map_task
         for word, count in pairs:
             intermediate_data[word].append(count)
     

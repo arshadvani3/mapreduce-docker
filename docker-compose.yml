@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Coordinator service - orchestrates MapReduce
+  coordinator:
+    build: .
+    container_name: coordinator
+    hostname: coordinator
+    command: python coordinator.py
+    networks:
+      - mapreduce-network
+    environment:
+      - NUM_WORKERS=3  # Configure number of workers here
+    volumes:
+      - ./txt:/app/txt  # Persist downloaded datasets
+    depends_on:
+      - worker-1
+      - worker-2
+      - worker-3
+  
+  # Worker 1
+  worker-1:
+    build: .
+    container_name: worker-1
+    hostname: worker-1
+    command: python worker.py
+    networks:
+      - mapreduce-network
+    ports:
+      - "18861:18861"  # Expose for debugging (optional)
+  
+  # Worker 2
+  worker-2:
+    build: .
+    container_name: worker-2
+    hostname: worker-2
+    command: python worker.py
+    networks:
+      - mapreduce-network
+    ports:
+      - "18862:18861"
+  
+  # Worker 3
+  worker-3:
+    build: .
+    container_name: worker-3
+    hostname: worker-3
+    command: python worker.py
+    networks:
+      - mapreduce-network
+    ports:
+      - "18863:18861"
+
+networks:
+  mapreduce-network:
+    driver: bridge

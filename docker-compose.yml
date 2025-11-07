@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # Coordinator service - orchestrates MapReduce
@@ -10,14 +10,15 @@ services:
     networks:
       - mapreduce-network
     environment:
-      - NUM_WORKERS=3  # Configure number of workers here
+      - NUM_WORKERS=3 # Configure number of workers here
+      - PYTHONUNBUFFERED=1
     volumes:
-      - ./txt:/app/txt  # Persist downloaded datasets
+      - ./txt:/app/txt # Persist downloaded datasets
     depends_on:
       - worker-1
       - worker-2
       - worker-3
-  
+
   # Worker 1
   worker-1:
     build: .
@@ -27,8 +28,8 @@ services:
     networks:
       - mapreduce-network
     ports:
-      - "18861:18861"  # Expose for debugging (optional)
-  
+      - "18861:18861" # Expose for debugging (optional)
+
   # Worker 2
   worker-2:
     build: .
@@ -39,7 +40,7 @@ services:
       - mapreduce-network
     ports:
       - "18862:18861"
-  
+
   # Worker 3
   worker-3:
     build: .

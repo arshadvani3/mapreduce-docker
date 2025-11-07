@@ -9,7 +9,7 @@ import sys
 def generate_docker_compose(num_workers):
     """Generate docker-compose.yml with specified number of workers"""
     
-    yaml_content = f"""version: '3.8'
+    yaml_content = f"""version: "3.8"
 
 services:
   # Coordinator service - orchestrates MapReduce
@@ -21,9 +21,10 @@ services:
     networks:
       - mapreduce-network
     environment:
-      - NUM_WORKERS={num_workers}
+      - NUM_WORKERS={num_workers} # Configure number of workers here
+      - PYTHONUNBUFFERED=1
     volumes:
-      - ./txt:/app/txt
+      - ./txt:/app/txt # Persist downloaded datasets
     depends_on:
 """
     
@@ -34,7 +35,9 @@ services:
     # Add worker services
     for i in range(1, num_workers + 1):
         port = 18860 + i
+        comment = " # Expose for debugging (optional)" if i == 1 else ""
         yaml_content += f"""
+  # Worker {i}
   worker-{i}:
     build: .
     container_name: worker-{i}
@@ -43,7 +46,7 @@ services:
     networks:
       - mapreduce-network
     ports:
-      - "{port}:18861"
+      - "{port}:18861"{comment}
 """
     
     # Add network configuration

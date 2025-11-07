@@ -50,7 +50,7 @@ class TaskTracker:
         return failed
 
 
-def download(url='https://mattmahoney.net/dc/enwik8.zip'):
+def download(url='https://mattmahoney.net/dc/enwik9.zip'):
     """
     Downloads and unzips a wikipedia dataset into txt/ directory.
     Skips if files already exist.
@@ -395,7 +395,7 @@ if __name__ == "__main__":
     time.sleep(5)
     
     # Download dataset
-    url = sys.argv[1] if len(sys.argv) > 1 else 'https://mattmahoney.net/dc/enwik8.zip'
+    url = sys.argv[1] if len(sys.argv) > 1 else 'https://mattmahoney.net/dc/enwik9.zip'
     input_files = download(url)
     
     # Run MapReduce

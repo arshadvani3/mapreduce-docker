@@ -94,7 +94,7 @@ def mapreduce_wordcount(input_files, workers):
 
             conn = conns[rr_idx]
             rr_idx = (rr_idx + 1) % len(conns)
-            ar = rpyc.async_(conn.root.map)(chunk)  # worker returns {word: count}
+            ar = rpyc.async_(conn.root.exposed_map)(chunk)  # FIXED: explicit exposed_map
             inflight.append(ar)
             dispatched += 1
 

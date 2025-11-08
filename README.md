@@ -283,10 +283,10 @@ lsof -i :18861
 ### Performance Characteristics
 
 For enwik9 (1GB, ~1 billion characters):
-- **1 worker**: ~200-250 seconds
-- **2 workers**: ~120-150 seconds
-- **4 workers**: ~70-90 seconds
-- **8 workers**: ~50-70 seconds
+- **1 worker**: ~400-450 seconds
+- **2 workers**: ~300-350 seconds
+- **4 workers**: ~200-250 seconds
+- **8 workers**: ~150-200 seconds
 
 *(Times vary based on CPU, memory, and Docker configuration)*
 

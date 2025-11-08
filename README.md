@@ -332,5 +332,5 @@ MIT License - free for educational purposes.
 
 ## Author
 
-Arshad Vani
+Arsh advani
 https://github.com/arshadvani3/mapreduce-docker
